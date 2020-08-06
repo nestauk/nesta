@@ -1,0 +1,60 @@
+[
+    {
+        "batchable": "batchables/nlp/ngrammer",
+        "env_files": [
+            "/nesta",
+            "/config/mysqldb.config"
+        ],
+        "job_def": "py36_sklearn_amzn1_image",
+        "job_name": "ngram",
+        "job_queue": "HighPriority",
+	"n_batches": 100,
+        "memory": 4000,
+        "poll_time": 20,
+        "region_name": "eu-west-2",
+        "use_intermediate_inputs": false
+    },
+    {
+        "batchable": "batchables/nlp/vectorizer",
+        "hyperparameters": {
+            "binary": [true, false],
+            "min_df": [0.001, 0.01],
+            "max_df": [0.9, 0.99]
+        },
+        "job_name": "vectorizer",
+        "memory": 16000,
+        "n_batches": 1,
+        "timeout": 72000,
+        "use_intermediate_inputs": false
+    },
+    {
+        "batchable": "batchables/sklearn_models/multilabel_classifier",
+        "hyperparameters": {
+	    "model": ["linear_model.LogisticRegression"],
+	    "class_weight": ["balanced", null],	    
+	    "penalty": ["l1","l2"],
+	    "C": "np.arange(0.1, 1.1, 0.3)",
+	    "solver": ["liblinear"],
+	    "class_field": ["sic"]
+	},
+        "job_name": "logistic_regression",
+        "job_def": "py36_sklearn_amzn1_image",
+	"combine_outputs": false
+    },
+    {
+	"child": "vectorizer",
+        "batchable": "batchables/sklearn_models/multilabel_classifier",
+        "hyperparameters": {
+	    "model": ["ensemble.RandomForestClassifier"],
+	    "class_weight": ["balanced", null],
+	    "max_depth": "np.arange(1, 22, 2)",
+	    "min_samples_leaf": "np.arange(2, 7, 2)",
+	    "n_estimators": "np.arange(10, 140, 25)",
+	    "n_jobs": 2,
+	    "class_field": ["sic"]
+	},
+        "job_name": "random_forest",	
+        "job_def": "py36_sklearn_amzn1_image",
+	"combine_outputs": false
+    }
+]

@@ -14,6 +14,7 @@ from nesta.packages.nlp_utils.ngrammer import Ngrammer
 from nesta.core.luigihacks.s3 import parse_s3_path
 import json
 
+
 def run():
     # Extract environmental variables
     s3_path_in = os.environ['BATCHPAR_s3_path_in']

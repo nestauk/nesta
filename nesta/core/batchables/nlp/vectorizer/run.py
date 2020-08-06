@@ -73,6 +73,8 @@ def run():
     # Extract text and indexes from the data, then delete the dead weight
     _data = [merge_lists(row[text_field]) for row in data]
     index = [row[id_field] for row in data]
+    other_fields = [{k: v for k, v in row.items() if k not in (id_field, text_field)}
+                    for row in data]
     assert len(_data) == len(data)
     del data
 
@@ -82,8 +84,9 @@ def run():
                         no_above=max_df)
 
     # Write the data as JSON
-    body = json.dumps([dict(id=idx, **term_counts(dct, row, binary))
-                       for idx, row in zip(index, _data)])
+    body = json.dumps([dict(id=idx, term_counts=term_counts(dct, row, binary),
+                            **other)
+                       for idx, row, other in zip(index, _data, other_fields)])
     del _data
     del index
     del dct

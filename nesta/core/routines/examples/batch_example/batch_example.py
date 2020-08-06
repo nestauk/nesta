@@ -7,6 +7,7 @@ An example of building a pipeline with batched tasks.
 
 from nesta.core.luigihacks import autobatch
 from nesta.core.luigihacks import s3
+from nesta.core.luigihacks.misctools import find_filepath_from_pathstub as f3p
 import luigi
 import datetime
 import json
@@ -82,9 +83,9 @@ class RootTask(luigi.Task):
     def requires(self):
         '''Get the output from the batchtask'''
         return SomeBatchTask(date=self.date,
-                             batchable=("~/nesta/nesta/core/"
-                                        "batchables/examples/batch_example/"),
-                             job_def="standard_image",
+                             env_files=[f3p("/nesta")],
+                             batchable=(f3p("batchables/examples/batch_example/")),
+                             job_def="py36_amzn1_image",
                              job_name="batch-example-%s" % self.date,
                              job_queue="HighPriority",
                              region_name="eu-west-2",

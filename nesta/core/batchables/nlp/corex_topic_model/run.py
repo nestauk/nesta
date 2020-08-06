@@ -7,7 +7,6 @@ Generate topics based on the CorEx algorithm. Loss is calculated from the total 
 
 import pandas as pd
 import json
-from itertools import chain
 from scipy.sparse import csr_matrix
 from corextopic import corextopic as ct
 from nesta.core.luigihacks.s3 import parse_s3_path
@@ -17,6 +16,25 @@ from ast import literal_eval
 
 WEIGHT_THRESHOLD = 1e-2
 
+def term_count_to_sparse(term_counts):
+    # Pack the data into a sparse matrix                  
+    indptr = [0]  # Number of non-null entries per row    
+    indices = []  # Positions of non-null entries per row 
+    counts = []  # Term counts/weights per position       
+    vocab = {}  # {Term: position} lookup                 
+    for row in term_counts:
+        for term, count in row.items():
+            idx = vocab.setdefault(term, len(vocab))
+            indices.append(idx)
+            counts.append(count)
+        indptr.append(len(indices))
+    X = csr_matrix((counts, indices, indptr), dtype=int)
+
+    # {Position: term} lookup                             
+    _vocab = {v:k for k, v in vocab.items()}
+    return X, _vocab
+
+
 def run():
     s3_path_in = os.environ['BATCHPAR_s3_path_in']
     n_hidden = int(literal_eval(os.environ['BATCHPAR_n_hidden']))
@@ -25,24 +43,9 @@ def run():
     s3 = boto3.resource('s3')
     s3_obj_in = s3.Object(*parse_s3_path(s3_path_in))
     data = json.load(s3_obj_in.get()['Body'])    
-
-    # Pack the data into a sparse matrix
-    ids = []  # Index of each row
-    indptr = [0]  # Number of non-null entries per row
-    indices = []  # Positions of non-null entries per row
-    counts = []  # Term counts/weights per position
-    vocab = {}  # {Term: position} lookup
-    for row in data:
-        ids.append(row.pop('id'))
-        for term, count in row.items():
-            idx = vocab.setdefault(term, len(vocab))
-            indices.append(idx)
-            counts.append(count)
-        indptr.append(len(indices))
-    X = csr_matrix((counts, indices, indptr), dtype=int)
-
-    # {Position: term} lookup
-    _vocab = {v:k for k, v in vocab.items()}
+    term_counts = data['term_counts']
+    ids = data['id']
+    X, _vocab = term_counts_to_sparse(term_counts)
 
     # Fit the model
     topic_model = ct.Corex(n_hidden=n_hidden)
