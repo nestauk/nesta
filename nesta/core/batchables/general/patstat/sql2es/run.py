@@ -71,6 +71,20 @@ def select_metadata(orm, session, appln_ids, field_selector=None):
             session.query(orm).filter(_filter).all()]
 
 
+def extract_nuts_by_lvl(persons):
+    nuts_by_lvl = {lvl: [p['nuts'] for p in persons
+                         if p['nuts'] is not None
+                         and p['nuts_level'] == lvl]
+                   for lvl in range(0, 4)}
+    # Back-fill any missing nuts levels, noting that these
+    # will be deduplicated after
+    for lvl in reversed(range(1, 4)):
+        nuts_by_lvl[lvl-1] += [nuts[:-1] for nuts in nuts_by_lvl[lvl]]
+    # Deduplicate and return as dict ready for ingestion
+    return {f'nuts{lvl}': sorted(set(nuts)) 
+            for lvl, nuts in nuts_by_level}
+
+
 def reformat_row(row, _engine):
     """Aggregate and merge a PATSTAT application family with metadata.
 
@@ -106,12 +120,14 @@ def reformat_row(row, _engine):
     nace2s = sorted(set(n['nace2_code'] for n in nace2s))
     techs = sorted(set(t['techn_field_nr'] for t in techs))
     ctrys = sorted(set(p['person_ctry_code'] for p in persons))
-    nuts = sorted(set(p['nuts'] for p in persons if p['nuts'] is not None))
     is_eu = any(c in eu_countries for c in ctrys)
+    nuts_by_level = extract_nuts_by_lvl(persons)
 
     # Index the data
     row = dict(title=title, abstract=abstr, ipc=ipcs, nace2=nace2s,
-               tech=techs, ctry=ctrys, nuts=nuts, is_eu=is_eu, **row)
+               tech=techs, ctry=ctrys, is_eu=is_eu, **row, 
+               **nuts_by_level)
+
     return row
 
 
