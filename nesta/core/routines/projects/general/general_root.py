@@ -11,6 +11,7 @@ from nesta.core.luigihacks.sql2estask import Sql2EsTask
 from nesta.core.luigihacks.misctools import find_filepath_from_pathstub as f3p
 
 from nesta.core.orms.general_orm import CrunchbaseOrg  # Already curated
+from nesta.core.orms.general_orm import NihProject  # Already curated
 from nesta.core.orms.gtr_orm import Projects as GtrProject  # Curated on ingestion
 from nesta.core.orms.arxiv_orm import Article as ArxivArticle  # Curated on ingestion
 from nesta.core.orms.patstat_orm import ApplnFamilyEU as PatstatFamily  # Curated on ingestion
@@ -26,7 +27,8 @@ DATASETS = {'gtr': ('project', GtrProject.id),
             'arxiv': ('article', ArxivArticle.id),
             'companies': ('company', CrunchbaseOrg.id),
             'patstat': ('patent', PatstatFamily.docdb_family_id),  # <--- takes one week
-            'cordis': ('project', CordisProject.rcn)}
+            'cordis': ('project', CordisProject.rcn),
+            'nih': ('project', NihProject.application_id)}
 
 def kwarg_maker(dataset, routine_id):
     env_files=list(f3p(f) for f in ENV_FILES) + [f3p(f'tier_1/datasets/{dataset}.json')]

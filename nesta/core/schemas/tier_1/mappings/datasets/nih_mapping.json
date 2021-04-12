@@ -1,182 +1,221 @@
 {
     "mappings": {
-        "_doc": {
-            "dynamic": "strict",
-            "properties": {
-                "booleanFlag_duplicate_abstract": {
-                    "null_value": false,
-                    "type": "boolean"
-                },
-                "coordinate_of_organisation": {
-                    "type": "geo_point"
-                },
-                "cost_total_project": {
-                    "type": "long"
-                },
-                "currency_total_cost": {
-                    "type": "keyword"
-                },
-                "date_end_project": {
-                    "format": "yyyy-MM-dd",
-                    "type": "date"
-                },
-                "date_start_project": {
-                    "format": "yyyy-MM-dd",
-                    "type": "date"
-                },
-                "id_iso2_country": {
-                    "type": "keyword"
-                },
-                "id_iso3_country": {
-                    "type": "keyword"
-                },
-                "id_isoNumeric_country": {
-                    "type": "integer"
-                },
-                "id_of_continent": {
-                    "type": "keyword"
-                },
-                "id_of_project": {
-                    "type": "keyword"
-                },
-                "id_state_organisation": {
-                    "type": "keyword"
-                },
-                "json_funding_project": {
-                    "properties": {
-                        "cost_ref": {
-                            "type": "long"
-                        },
-                        "end_date": {
-                            "format": "yyyy-MM-dd",
-                            "type": "date"
-                        },
-                        "start_date": {
-                            "format": "yyyy-MM-dd",
-                            "type": "date"
-                        },
-                        "year": {
-                            "type": "integer"
-                        }
+        "dynamic": "strict",
+        "properties": {
+            "coordinate_of_organisation": {
+                "type": "geo_point"
+            },
+            "cost_total_project": {
+                "type": "long"
+            },
+            "currency_total_cost": {
+                "type": "keyword"
+            },
+            "date_end_project": {
+                "format": "yyyy-MM-dd",
+                "type": "date"
+            },
+            "date_start_project": {
+                "format": "yyyy-MM-dd",
+                "type": "date"
+            },
+            "id_iso2_country": {
+                "type": "keyword"
+            },
+            "id_iso3_country": {
+                "type": "keyword"
+            },
+            "id_isoNumeric_country": {
+                "type": "integer"
+            },
+            "id_of_continent": {
+                "type": "keyword"
+            },
+            "id_of_project": {
+                "type": "keyword"
+            },
+            "id_state_organisation": {
+                "type": "keyword"
+            },
+            "json_funding_project": {
+                "properties": {
+                    "project_end": {
+                        "format": "yyyy-MM-dd",
+                        "type": "date"
                     },
-                    "type": "nested"
-                },
-                "placeName_city_organisation": {
-                    "fields": {
-                        "keyword": {
-                            "type": "keyword"
-                        }
+                    "project_start": {
+                        "format": "yyyy-MM-dd",
+                        "type": "date"
                     },
-                    "type": "text"
-                },
-                "placeName_continent_organisation": {
-                    "fields": {
-                        "keyword": {
-                            "type": "keyword"
-                        }
+                    "total_cost": {
+                        "type": "long"
                     },
-                    "type": "text"
+                    "year": {
+                        "type": "integer"
+                    }
                 },
-                "placeName_country_organisation": {
-                    "fields": {
-                        "keyword": {
-                            "type": "keyword"
-                        }
-                    },
-                    "type": "text"
+                "type": "nested"
+            },
+            "placeName_city_organisation": {
+                "fields": {
+                    "keyword": {
+                        "type": "keyword"
+                    }
                 },
-                "placeName_state_organisation": {
-                    "fields": {
-                        "keyword": {
-                            "type": "keyword"
-                        }
-                    },
-                    "type": "text"
+                "type": "text"
+            },
+            "placeName_continent_organisation": {
+                "fields": {
+                    "keyword": {
+                        "type": "keyword"
+                    }
                 },
-                "placeName_zipcode_organisation": {
-                    "type": "keyword"
+                "type": "text"
+            },
+            "placeName_country_organisation": {
+                "fields": {
+                    "keyword": {
+                        "type": "keyword"
+                    }
                 },
-                "rank_rhodonite_abstract": {
-                    "type": "float"
+                "type": "text"
+            },
+            "placeName_state_organisation": {
+                "fields": {
+                    "keyword": {
+                        "type": "keyword"
+                    }
                 },
-                "terms_descriptive_project": {
-                    "fields": {
-                        "keyword": {
-                            "type": "keyword"
-                        }
-                    },
-                    "type": "text"
+                "type": "text"
+            },
+            "placeName_zipcode_organisation": {
+                "type": "keyword"
+            },
+            "rank_rhodonite_abstract": {
+                "type": "float"
+            },
+            "terms_descriptive_project": {
+                "fields": {
+                    "keyword": {
+                        "type": "keyword"
+                    }
                 },
-                "terms_mesh_abstract": {
-                    "analyzer": "terms_analyzer",
-                    "fields": {
-                        "keyword": {
-                            "type": "keyword"
-                        }
-                    },
-                    "type": "text"
+                "type": "text"
+            },
+            "terms_exactDupeId_project": {
+                "type": "keyword"
+            },
+            "terms_exactDupeTitle_project": {
+                "analyzer": "terms_analyzer",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword"
+                    }
                 },
-                "terms_of_countryTags": {
-                    "type": "keyword"
+                "type": "text"
+            },
+            "terms_id_clinicalTrial": {
+                "type": "keyword"
+            },
+            "terms_id_patent": {
+                "type": "keyword"
+            },
+            "terms_mesh_abstract": {
+                "analyzer": "terms_analyzer",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword"
+                    }
                 },
-                "terms_of_funders": {
-                    "analyzer": "terms_analyzer",
-                    "fields": {
-                        "keyword": {
-                            "type": "keyword"
-                        }
-                    },
-                    "type": "text"
+                "type": "text"
+            },
+            "terms_nearDupeId_project": {
+                "type": "keyword"
+            },
+            "terms_of_countryTags": {
+                "type": "keyword"
+            },
+            "terms_of_funders": {
+                "analyzer": "terms_analyzer",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword"
+                    }
                 },
-                "terms_sdg_abstract": {
-                    "type": "keyword"
+                "type": "text"
+            },
+            "terms_pubmedId_article": {
+                "type": "keyword"
+            },
+            "terms_similarId_project": {
+                "type": "keyword"
+            },
+            "terms_title_clinicalTrial": {
+                "analyzer": "terms_analyzer",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword"
+                    }
                 },
-                "textBody_abstract_project": {
-                    "fields": {
-                        "keyword": {
-                            "type": "keyword"
-                        }
-                    },
-                    "type": "text"
+                "type": "text"
+            },
+            "terms_title_patent": {
+                "analyzer": "terms_analyzer",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword"
+                    }
                 },
-                "textBody_descriptive_project": {
-                    "fields": {
-                        "keyword": {
-                            "type": "keyword"
-                        }
-                    },
-                    "type": "text"
+                "type": "text"
+            },
+            "terms_verySimilarId_project": {
+                "type": "keyword"
+            },
+            "textBody_abstract_project": {
+                "fields": {
+                    "keyword": {
+                        "type": "keyword"
+                    }
                 },
-                "title_of_funder": {
-                    "fields": {
-                        "keyword": {
-                            "type": "keyword"
-                        }
-                    },
-                    "type": "text"
+                "type": "text"
+            },
+            "textBody_descriptive_project": {
+                "fields": {
+                    "keyword": {
+                        "type": "keyword"
+                    }
                 },
-                "title_of_organisation": {
-                    "fields": {
-                        "keyword": {
-                            "type": "keyword"
-                        }
-                    },
-                    "type": "text"
+                "type": "text"
+            },
+            "title_of_funders": {
+                "fields": {
+                    "keyword": {
+                        "type": "keyword"
+                    }
                 },
-                "title_of_project": {
-                    "fields": {
-                        "keyword": {
-                            "type": "keyword"
-                        }
-                    },
-                    "type": "text"
+                "type": "text"
+            },
+            "title_of_organisation": {
+                "fields": {
+                    "keyword": {
+                        "type": "keyword"
+                    }
                 },
-                "type_of_entity": {
-                    "type": "keyword"
+                "type": "text"
+            },
+            "title_of_project": {
+                "fields": {
+                    "keyword": {
+                        "type": "keyword"
+                    }
                 },
-                "year_fiscal_funding": {
-                    "type": "integer"
-                }
+                "type": "text"
+            },
+            "type_of_entity": {
+                "type": "keyword"
+            },
+            "year_fiscal_funding": {
+                "type": "integer"
             }
         }
     }

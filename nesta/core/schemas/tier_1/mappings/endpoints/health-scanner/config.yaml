@@ -1,3 +1,0 @@
-# if hard-alias is true, actually change the names of the fields
-# rather than performing an elasticsearch alias
-hard-alias: false
